@@ -1,0 +1,29 @@
+#pragma once
+#include <string>
+#include <vector>
+#include "Cell.class"
+
+class World {
+public:
+	std::string name;
+	std::vector<std::vector<std::vector<Cell>>> grid; // этаж | x | y
+
+	World(){
+		name = "new_name";
+	}
+	/*void gen(){
+		for(int l=0; l<greed_size.z; l++){
+			std::vector<std::vector<Cell>> layer;//(n, vector <int> (m) );
+			for(int x=0; x<greed_size.x; x++){
+				std::vector<Cell> line;
+				for(int y=0; y<greed_size.y; y++){
+					Cell new_c = Cell();
+					line.push_back(new_c);
+				}
+				layer.push_back(line);
+			}
+			grid.push_back(layer);
+		}
+	}*/
+
+};

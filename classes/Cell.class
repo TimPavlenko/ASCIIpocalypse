@@ -1,0 +1,14 @@
+#pragma once
+
+class Cell {
+public:
+    std::string str;
+
+	Cell () {
+        str = ".";
+	}
+
+    std::string get_str(){
+        return str;
+    }
+};
