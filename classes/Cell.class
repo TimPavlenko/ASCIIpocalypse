@@ -1,14 +1,29 @@
 #pragma once
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include "Thing.class"
+
+bool compareByPrimary(const Thing &a, const Thing &b) {
+    return a.primary < b.primary;
+}
 
 class Cell {
+private:
+    std::vector<unsigned long> obs_id; // id объеков в этой клетке
 public:
-    std::string str;
-
-	Cell () {
-        str = ".";
-	}
+    void addObj(Thing obj){
+        cur_world.obs.push_back(obj);
+        obs_id.push_back(obj.id);
+    }
 
     std::string get_str(){
-        return str;
+        std::sort(obs.begin(), obs.end(), compareByPrimary);
+        if(obs.size()==0){
+            return " ";
+        }else{
+            return cur_world.obs[obs_id[0]].symbol;
+        }
+
     }
 };

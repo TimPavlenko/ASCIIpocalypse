@@ -153,3 +153,10 @@ std::string rem_center(int n, std::string s, std::string addstr=" "){
 	}
 	return srez;
 }
+
+Vector2i square_center(int size_x, int size_y){
+	Vector2i res;
+	res.x = div_up(size_x, 2);
+	res.y = div_up(size_y, 2);
+	return res;
+}

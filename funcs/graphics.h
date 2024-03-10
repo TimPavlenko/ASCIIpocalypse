@@ -32,17 +32,63 @@ void traversal(auto j, std::string type) {
 	int size_y = j["size"][1];
 	int pos_x = j["pos"][0];
 	int pos_y = j["pos"][1];
-	bool parts = j["parts"];
-
-	auto sizex {
-		[&size_x, &parts](){ return size_x - int{parts}*2; }
-	};
-	auto sizey {
-		[&size_y, &parts](){ return size_y - int{parts}*2; }
-	};
 
 	// Общие действия
-	if (j["parts"]) { // Рамка
+	std::vector<std::string> line = {};
+	for(int x=0; x<size_x; x++){
+		line.push_back(" ");
+	}
+	for(int y=0; y<size_y; y++){
+		prerez.push_back(line);
+	}
+	line = {};
+
+
+	// Специфичные действия разных типов
+	if (type == "label") { // лейбл пока не поддерживает мультистроку (деление на строки по разделителям)
+		std::vector<std::string> line = {};
+		int lbl_text_size = size_x;
+		std::string str = j["text"];
+
+		const char* ch_arr = str.c_str();
+		for (int i = 0; i < str.size(); i++) {
+			line.push_back(std::string{ ch_arr[i] });
+		}
+
+		//int free_space = lbl_text_size - div_up(std::string{ j["text"] }.size(), 2);
+		//line.push_back(std::string{ j["text"] });
+		for (int i = 0; i < lbl_text_size-str.size(); i++) {
+			line.push_back(" ");
+		}
+
+		prerez[div_up(size_y, 2)-1] = line;
+
+	}
+	if (type == "multiline") {
+		std::vector<std::string> strv = split(j["text"], ';');
+
+		int lbl_text_size = size_x;
+		int ii = 0;
+
+		for(std::string str : strv) {
+			std::vector<std::string> line = {};
+
+			const char* ch_arr = str.c_str();
+			for (int i = 0; i < str.size(); i++) {
+				line.push_back(std::string{ ch_arr[i] });
+			}
+			for (int i = 0; i < lbl_text_size-str.size(); i++) {
+				line.push_back(" ");
+			}
+
+			if(ii<size_y){
+				prerez[ii] = line;
+			}
+			ii++;
+		}
+	}
+	if (type == "panel") {
+		prerez = {}; // костыль
 		std::vector<std::string> line = {};
 		line.push_back("_");
 		for (int i = 1; i < size_x - 1; i++) {
@@ -67,75 +113,12 @@ void traversal(auto j, std::string type) {
 		for (int i = 1; i < size_x - 1; i++) {
 			line.push_back("-");
 		}
+
 		line.push_back("_");
 		prerez.push_back(line);
-	}else{
-		std::vector<std::string> line = {};
-		for(int x=0; x<size_x; x++){
-			line.push_back(" ");
-		}
-		for(int y=0; y<size_y; y++){
-			prerez.push_back(line);
-		}
 	}
 
-	// Специфичные действия разных типов
-	if (type == "label") { // лейбл пока не поддерживает мультистроку (деление на строки по разделителям)
-		std::vector<std::string> line = {};
-		int lbl_text_size = size_x;
-		if (j["parts"]) {
-			line.push_back("|");
-			lbl_text_size -= 2;
-		}
-
-		std::string str = j["text"];
-
-		const char* ch_arr = str.c_str();
-		for (int i = 0; i < str.size(); i++) {
-			line.push_back(std::string{ ch_arr[i] });
-		}
-
-		//int free_space = lbl_text_size - div_up(std::string{ j["text"] }.size(), 2);
-		//line.push_back(std::string{ j["text"] });
-		for (int i = 0; i < lbl_text_size-str.size(); i++) {
-			line.push_back(" ");
-		}
-
-		if (j["parts"]) { line.push_back("|"); }
-
-		prerez[div_up(size_y, 2)-1] = line;
-
-	}
-	if (type == "multiline"){
-		std::vector<std::string> strv = split(j["text"], ';');
-
-		int lbl_text_size = size_x;
-		if (j["parts"]) { lbl_text_size -= 2;}
-		int ii = 0+int{parts};
-
-		for(std::string str : strv){
-			std::vector<std::string> line = {};
-
-			if (j["parts"]) { line.push_back("|"); }
-			const char* ch_arr = str.c_str();
-			for (int i = 0; i < str.size(); i++) {
-				line.push_back(std::string{ ch_arr[i] });
-			}
-			for (int i = 0; i < lbl_text_size-str.size(); i++) {
-				line.push_back(" ");
-			}
-			if (j["parts"]) { line.push_back("|"); }
-
-			if(ii<size_y){
-				prerez[ii] = line;
-			}
-			ii++;
-		}
-	}
-	if (type == "panel") {
-		std::cout << "pnl!" << std::endl;
-	}
-	if (type == "greed") {
+	if (type == "grid") {
 		std::string str = j["cells"];
 		std::vector<std::string> vstr = split(str, ';');
 		/*for(auto s : vstr){
@@ -143,26 +126,22 @@ void traversal(auto j, std::string type) {
 		}*/
 
 		int iv=0;
-		for(int iy=0+int{parts}; iy<sizey()+int{parts}/*-int{parts}*/; iy++){
-			if(iy <= vstr.size()){
-				std::vector<std::string> line;
-				if(parts){ line.push_back("|"); }
+		for(int iy=0; iy<size_y; iy++){
+			if(iy <= vstr.size() && iv < vstr.size()){
+				std::vector<std::string> locline;
 
 				std::string str = vstr[iv];
 				const char* ch_arr = str.c_str();
 				for (int i = 0; i < str.size(); i++) {
-					line.push_back(std::string{ ch_arr[i] });
+					locline.push_back(std::string{ ch_arr[i] });
 				}
-				for (int i = 0; i < sizex()-str.size(); i++) {
-					line.push_back(" ");
+				for (int i = 0; i < size_x-str.size(); i++) {
+					locline.push_back(" ");
 				}
-				if(parts){ line.push_back("|"); }
-				
-				prerez[iy] = line;
+				prerez[iy] = locline;
 				iv++;
 			}
 		}
-		print("end)");
 	}
 
 	// Позиционирование
@@ -173,19 +152,9 @@ void traversal(auto j, std::string type) {
 		}
 		prerez.insert(prerez.begin(), dop_line);
 	}
-
 	for (int i = 0; i < pos_x; i++) { // сдвиг вправо
 		for (int j = 0; j < prerez.size(); j++) {
 			prerez[j].insert(prerez[j].begin(), " ");
-		}
-	}
-
-	// Наложение
-	for (int iy = 0; iy < prerez.size(); iy++) {
-		for (int ix = 0; ix < prerez[iy].size(); ix++) {
-			if (prerez[iy][ix] != " ") {
-				rez[iy][ix] = prerez[iy][ix];
-			}
 		}
 	}
 
@@ -198,6 +167,16 @@ void traversal(auto j, std::string type) {
 		std::cout << std::endl;
 	}
 	std::cout << std::endl;*/
+
+	// Наложение
+	for (int iy = 0; iy < prerez.size(); iy++) {
+		for (int ix = 0; ix < prerez[iy].size(); ix++) {
+			if (prerez[iy][ix] != " ") {
+				rez[iy][ix] = prerez[iy][ix];
+			}
+		}
+	}
+
 
 	// Рекурсия
 	for (auto it = j["children"][0].begin(); it != j["children"][0].end(); ++it) {
@@ -225,7 +204,7 @@ void set_parameters(json* j_ptr, std::map<std::string, std::string>* parameters_
 				}
 			}
 		}
-		if (it.key() == "text") {
+		if (it.key() == "text" || it.key() == "cells") {
 			//if (it.value().is_string()) {
 				if ((*parameters_ptr).find(it.value()) != (*parameters_ptr).end()) {
 					(*j_ptr)[it.key()] = (*parameters_ptr)[it.value()];

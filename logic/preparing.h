@@ -12,7 +12,6 @@ void sc_preparing() {
     bool run = true;
     while (run) {
         // drawing:
-        //clear();
         std::map<std::string, std::string> params = {
             {"k_a1", cat(std::string{arrow_pointer_op(1)}, "let's do it")},
             {"k_a2", cat(std::string{arrow_pointer_op(2)}, "here will be; the character settings")},
@@ -20,7 +19,7 @@ void sc_preparing() {
             {"root_x", std::to_string(settings.w) },
             {"root_y", std::to_string(settings.h) }
         };
-
+        clear();
         std::cout << rendering(read_file("screens/preparing.sc"), params);
 
         // input catching:
@@ -36,6 +35,7 @@ void sc_preparing() {
                     case 1:
                         cur_menu_num = DUNGEON;
                         run = false;
+                        cur_world.gen(10, 10, 2);
                         break;
                     case 2:
                         print("2");
@@ -48,5 +48,4 @@ void sc_preparing() {
             break;
         }
     }
-    //cur_world.gen();
 }

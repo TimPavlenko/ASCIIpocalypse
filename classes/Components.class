@@ -1,0 +1,26 @@
+#pragma once
+
+class Component{
+public:
+    //void getParam(ClassOne& obj);
+    std::string test = "rar";
+};
+
+/*
+class Player : public Component {
+public:
+    switch(cross_screen_buffer["PlayerCom"]) {
+        case 1:
+            print("move_up");
+        break;
+        case 2:
+            print("move_down");
+        break;
+        case 3:
+            print("move_left");
+        break;
+        case 4:
+            print("move_right");
+        break;
+    }
+};*/
