@@ -1,31 +1,42 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "Thing.class"
 #include "Cell.class"
 
 class World {
+	//int *ptr = nullptr; // объявляем указатель на переменную
+
+    /*void setPtr(int* ptr) { // метод для установки указателя
+        this->ptr = ptr;
+    }*/
+
 public:
 	std::map<unsigned long, Thing> obs; // id, obj
 	std::string name;
 	std::vector<std::vector<std::vector<Cell>>> grid; // этаж | y | x
 
-	World(){
+	/*World(){
+		cur_world_ptr = this;
 		name = "new_name";
+	}*/
+
+	void addObj(Vector3i cellpos, Thing obj){ // добавить объект в клетку
+		//(*world_ptr).obs[obj.id] = obj;
+		obs[obj.id] = obj;
+		grid[cellpos.x][cellpos.y][cellpos.z].obs_id.push_back(obj.id);
 	}
+
 	void gen(int nx, int ny, int layers){
 		// заполнение сетки мира клетками
 		for(int il=0; il<layers; il++){
 			std::vector<std::vector<Cell>> layer;
 			for(int iy=0; iy<ny; iy++){
 				std::vector<Cell> line;
-				Cell new_c1 = Cell();
-				new_c1.addObj(Thing(tid, "v_wall"));
-				tid++;
+				Cell new_c1 = Cell(/*this*/);
 				line.push_back(new_c1);
 				for(int ix=0; ix<nx-2; ix++){
-					Cell new_c = Cell();
-					new_c.addObj(Thing(tid, "floor"));
-					tid++;
+					Cell new_c = Cell(/*this*/);
 					line.push_back(new_c);
 				}
 				line.push_back(new_c1);
@@ -35,9 +46,41 @@ public:
 			grid.push_back(layer);
 		}
 
+		// заполнение клеток объектами
+		for(int il=0; il<layers; il++){
+			for(int iy=0; iy<ny; iy++){
+				addObj(Vector3i(il,iy,0), Thing("v_wall"));
+				for(int ix=1; ix<nx-1; ix++){
+					addObj(Vector3i(il,iy,ix), Thing("floor"));
+				}
+				//grid[il][iy][grid[il][iy].size()-1].addObj(Thing("v_wall"));
+				addObj(Vector3i(il,iy,grid[il][iy].size()-1), Thing("v_wall"));
+			}
+		}
 		// Герой:
-		grid[0][2][1].addObj(Thing("player"));
+		addObj(Vector3i(0,2,1), Thing("player"));
 
 	}
+
+	std::vector<std::vector<std::string>> get_str(int layer){
+        std::vector<std::vector<std::string>> rez;
+
+		for(int iy=0; iy<grid[layer].size(); iy++){
+			std::vector<std::string> line;
+			for(int ix=0; ix<grid[layer][iy].size(); ix++){
+				std::vector<Thing> tmp;
+				for(auto i : grid[layer][iy][ix].obs_id){ tmp.push_back(obs[i]); }
+				if(tmp.size()==0){
+					line.push_back(" ");
+				}else{
+					std::sort(tmp.begin(), tmp.end(), compareByPrimary);
+					line.push_back(tmp[0].symbol);
+				}
+
+			}
+			rez.push_back(line);
+		}
+		return rez;
+    }
 
 };

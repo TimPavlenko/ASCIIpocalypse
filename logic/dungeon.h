@@ -54,11 +54,12 @@ void sc_dungeon() {
         // Формирование play_against_greed:
         std::string pa_greed_cells = "";
         //pa_greed_cells = "#   # ##### #   #  ##;#  ##   #   ## ## #  #;# # #   #   # # # #  #;##  #   #   #   # #  #;#   #   #   #   #  ##";
+        std::vector<std::vector<std::string>> pa_greed_cells_v = cur_world.get_str(0);
         for(int iy=0; iy<10; iy++){
             for(int ix=0; ix<10; ix++){
-                pa_greed_cells += cur_world.grid[0][iy][ix].get_str();
+                pa_greed_cells += pa_greed_cells_v[iy][ix];
             }
-            print(pa_greed_cells);
+            //print(pa_greed_cells);
             pa_greed_cells += ";";
         }
 

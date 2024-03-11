@@ -1,24 +1,32 @@
 #pragma once
 #include <vector>
 #include <string>
-#include "Components.class"
+//#include "Components.class"
 
 class Thing { // нечто находящееся в клетке (предмет, враг, герой и тд)
 public:
     unsigned long id;
     std::string symbol;
     int primary; // приоритет отображения (1-наивысший)
-    std::vector<std::string> tags; // "теги" объекта (поднимаемый, непроходимый, исключающий и тд)
-    std::vector<Component*> components; // отвечают за поведение объекта
+    //std::vector<std::string> tags; // "теги" объекта (поднимаемый, непроходимый, исключающий и тд)
+    //std::vector<Component*> components; // отвечают за поведение объекта
 
-    Thing(unsigned long nid, std::string type){
-        id = nid;
+    Thing(){
+        id = tid;
+        tid++;
+        symbol="X";
+        primary = 1;
+    }
+
+    Thing(std::string type){
+        id = tid;
+        tid++;
 
         symbol = "0";
         if(type=="bedrock"){
             symbol=" ";
             primary = 1;
-            tags.push_back("impassable");
+            //tags.push_back("impassable");
         }
         if(type=="corridor"){
             symbol="#";
