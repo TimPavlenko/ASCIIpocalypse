@@ -28,12 +28,16 @@ const int min_h=20, max_h=60, min_w=100, max_w=230;
 // ------ global vars ------
 int cur_menu_num = MAIN_MENU;
 std::map<std::string, int> cross_screen_buffer;
-unsigned long tid = 0;
+unsigned long tid = 0; // счётчик выданных id'шников
+std::map<std::string, unsigned long> id_buffer;
+/*	contain:
+	"player_id" - id игрока, по которому UI получает его статы
+*/
 
 // ------ settings ------
 #include "classes/Settings.class"
-Settings settings;/*
-	contain:
+Settings settings;
+/*	contain:
 	"window_h" - hight
 	"window_w" - width
 */

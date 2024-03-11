@@ -84,7 +84,7 @@ void sc_dungeon() {
             {"pa_grid_text",  pa_greed_cells},
         };
 
-        clear();
+        //clear();
         std::cout << rendering(loc_prompt, params);
 
         cross_screen_buffer["PlayerCom"] = 0;
@@ -106,5 +106,6 @@ void sc_dungeon() {
 
             break;
         }
+        cur_world.tick();
     }
 }

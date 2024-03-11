@@ -83,4 +83,10 @@ public:
 		return rez;
     }
 
+	void tick(){
+		for(auto& item : obs){
+			item.second.tick();
+		}
+	}
+
 };
