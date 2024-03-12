@@ -8,8 +8,6 @@ bool compareByPrimary(const Thing &a, const Thing &b) {
     return a.primary < b.primary;
 }
 
-class World;
-
 class Cell {
 private:
 

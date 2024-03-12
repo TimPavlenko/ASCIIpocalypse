@@ -1,15 +1,16 @@
 #pragma once
 #include <vector>
 #include <string>
-//#include "Components.class"
+
+#include "Components.class"
 
 class Thing { // нечто находящееся в клетке (предмет, враг, герой и тд)
 public:
     unsigned long id;
     std::string symbol;
     int primary; // приоритет отображения (1-наивысший)
-    //std::vector<std::string> tags; // "теги" объекта (поднимаемый, непроходимый, исключающий и тд)
-    //std::vector<Component*> components; // отвечают за поведение объекта
+    std::vector<std::string> tags; // "теги" объекта (поднимаемый, непроходимый, исключающий и тд)
+    std::vector<Component*> components; // отвечают за поведение объекта
 
     Thing(){
         id = tid;
@@ -20,12 +21,11 @@ public:
 
     Thing(std::string type){
         id = tid;
-        tid++;
-
         symbol = "0";
+
         if(type=="bedrock"){
             symbol=" ";
-            primary = 1;
+            primary = 2;
             //tags.push_back("impassable");
         }
         if(type=="corridor"){
@@ -48,8 +48,18 @@ public:
         }
         if(type=="player"){
             symbol="@";
-            primary = 2;
-            //components.push_back(new Tag());
+            primary = 1;
+            id_buffer["player_id"] = id;
+            components.push_back(new Player(this));
+            //obs[obj.id]
+        }
+
+        tid++;
+    }
+
+    void tick(World& world){
+        for(auto& comp : components){
+            comp->tick(world);
         }
     }
 };

@@ -84,7 +84,13 @@ void sc_dungeon() {
             {"pa_grid_text",  pa_greed_cells},
         };
 
-        clear();
+        //clear();
+        /*print(std::to_string(id_buffer["player_id"]));
+        print("+===+");
+        for(auto i : cur_world.grid){
+
+        }*/
+
         std::cout << rendering(loc_prompt, params);
 
         cross_screen_buffer["PlayerCom"] = 0;
@@ -106,5 +112,6 @@ void sc_dungeon() {
 
             break;
         }
+        cur_world.tick(cur_world);
     }
 }

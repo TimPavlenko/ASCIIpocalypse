@@ -4,6 +4,8 @@
 #include "Thing.class"
 #include "Cell.class"
 
+
+
 class World {
 	//int *ptr = nullptr; // объявляем указатель на переменную
 
@@ -20,12 +22,6 @@ public:
 		cur_world_ptr = this;
 		name = "new_name";
 	}*/
-
-	void addObj(Vector3i cellpos, Thing obj){ // добавить объект в клетку
-		//(*world_ptr).obs[obj.id] = obj;
-		obs[obj.id] = obj;
-		grid[cellpos.x][cellpos.y][cellpos.z].obs_id.push_back(obj.id);
-	}
 
 	void gen(int nx, int ny, int layers){
 		// заполнение сетки мира клетками
@@ -83,4 +79,61 @@ public:
 		return rez;
     }
 
+	void tick(World& world){
+		for(auto& item : obs){
+			item.second.tick(world);
+		}
+	}
+
+	// ====== действия с объектами ======
+	void addObj(Vector3i cellpos, Thing obj){ // добавить объект в клетку
+		//(*world_ptr).obs[obj.id] = obj;
+		obs[obj.id] = obj;
+		grid[cellpos.x][cellpos.y][cellpos.z].obs_id.push_back(obj.id);
+	}
+
+	void moveObj(unsigned long id, std::string route){
+		int ry, rx;
+		if(route=="up"){ ry=-1; rx=0; }
+		if(route=="down"){ ry=1; rx=0; }
+		if(route=="left"){ ry=0; rx=-1; }
+		if(route=="right"){ ry=0; rx=1; }
+		for(int il=0; il<grid.size(); il++){
+			for(int iy=0; iy<grid[il].size(); iy++){
+				for(int ix=0; ix<grid[il][iy].size(); ix++){
+					for(unsigned long i : grid[il][iy][ix].obs_id){
+						print(std::to_string(i));
+						//print(std::to_string(id_buffer["player_id"]));
+						if(i==id){
+							print("+===+");
+							print(std::to_string(i));
+							auto it = std::remove(grid[il][iy][ix].obs_id.begin(), grid[il][iy][ix].obs_id.end(), i);
+							grid[il][iy][ix].obs_id.erase(it, grid[il][iy][ix].obs_id.end());
+							grid[il][iy+ry][ix+rx].obs_id.push_back(i);
+						}
+					}
+				}
+			}
+		}
+		print(std::to_string(tid));
+	}
 };
+
+void Player::tick(World& world){
+	unsigned long cid = thing_ptr->id;
+	switch(cross_screen_buffer["PlayerCom"]) {
+		case 1:
+			world.moveObj(cid, "up");
+		break;
+		case 2:
+			world.moveObj(cid, "down");
+			world.grid[0][5][5].obs_id.push_back(400);
+		break;
+		case 3:
+			world.moveObj(cid, "left");
+		break;
+		case 4:
+			world.moveObj(cid, "right");
+		break;
+	}
+}
