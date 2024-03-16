@@ -13,6 +13,8 @@
 #include <algorithm>
 #include <typeinfo>
 #include <stdarg.h>
+#include <codecvt> // codecvt_utf8
+#include <locale>  // wstring_convert
 
 /*namespace th {
     void print(std::string str, char end = '\n');
@@ -38,6 +40,16 @@ public:
 
 
 // ############## funcs ##############
+
+#include <codecvt> // codecvt_utf8
+#include <locale>  // wstring_convert
+
+// encoding function
+std::string to_utf8(std::wstring& wide_string){
+    static std::wstring_convert<std::codecvt_utf8<wchar_t>> utf8_conv;
+    return utf8_conv.to_bytes(wide_string);
+}
+
 void print(auto str, char end='\n') {
     /*
     switch typeid(str).name() {
@@ -56,6 +68,22 @@ std::vector <std::string> split(std::string str, char separator) {
         if (str[i] == separator || i == str.size()) {
             endIndex = i;
             std::string temp;
+            temp.append(str, startIndex, endIndex - startIndex);
+            strings.push_back(temp);
+            startIndex = endIndex + 1;
+        }
+    }
+    return strings;
+}
+
+
+std::vector <std::wstring> wsplit(std::wstring str, wchar_t separator) {
+    std::vector <std::wstring> strings;
+    int startIndex = 0, endIndex = 0;
+    for (int i = 0; i <= str.size(); i++) {
+        if (str[i] == separator || i == str.size()) {
+            endIndex = i;
+            std::wstring temp;
             temp.append(str, startIndex, endIndex - startIndex);
             strings.push_back(temp);
             startIndex = endIndex + 1;
@@ -115,7 +143,17 @@ std::string cat(auto s1, auto s2){
 std::string cat(auto s1, auto s2, auto s3){
 	return std::string{s1}+std::string{s2}+std::string{s3};
 }
-
+std::wstring wcat(std::wstring s1, std::wstring s2){
+	std::wstring rez = s1;
+	rez+=s2;
+	return rez;
+}
+std::wstring wcat(std::wstring s1, std::wstring s2, std::wstring s3){
+	std::wstring rez = s1;
+	rez+=s2;
+	rez+=s3;
+	return rez;
+}
 
 bool to_bool(std::string const& s) {
      return (s != "0" and s != "true");
@@ -123,6 +161,20 @@ bool to_bool(std::string const& s) {
 
 std::string rem(int n, std::string s, std::string addstr=" "){ // remaining
 	std::string srez = "";
+
+	for(int i=0; i<n; i++){
+		if(i+1 < s.size()){
+			srez += s[i];
+		}else{
+		    srez += addstr;
+		}
+	}
+
+	return srez;
+}
+
+std::wstring wrem(int n, std::wstring s, std::wstring addstr=L" "){ // remaining
+	std::wstring srez = L"";
 
 	for(int i=0; i<n; i++){
 		if(i+1 < s.size()){

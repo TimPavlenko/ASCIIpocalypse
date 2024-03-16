@@ -6,21 +6,21 @@ void sc_preparing() {
     short arrow_pointer = 1;
 
     auto arrow_pointer_op{
-        [&arrow_pointer](short p){ if(arrow_pointer==p){ return std::string{">"}; }else{ return std::string{" "}; } }
+        [&arrow_pointer](short p){ if(arrow_pointer==p){ return std::wstring{L">"}; }else{ return std::wstring{L" "}; } }
     };
 
     bool run = true;
     while (run) {
         // drawing:
-        std::map<std::string, std::string> params = {
-            {"k_a1", cat(std::string{arrow_pointer_op(1)}, "let's do it")},
-            {"k_a2", cat(std::string{arrow_pointer_op(2)}, "here will be; the character settings")},
-            {"k_a3", cat(std::string{arrow_pointer_op(3)}, "back")},
-            {"root_x", std::to_string(settings.w) },
-            {"root_y", std::to_string(settings.h) }
+        std::map<std::string, std::wstring> params = {
+            {"k_a1", wcat(arrow_pointer_op(1), L"let's do it")},
+            {"k_a2", wcat(arrow_pointer_op(2), L"here will be; the character settings")},
+            {"k_a3", wcat(arrow_pointer_op(3), L"back")},
+            {"root_x", std::to_wstring(settings.w) },
+            {"root_y", std::to_wstring(settings.h) }
         };
         clear();
-        std::cout << rendering(read_file("screens/preparing.sc"), params);
+        std::wcout << rendering(read_file("screens/preparing.sc"), params);
 
         // input catching:
         switch ((int)wait_key_press()) {
@@ -35,7 +35,7 @@ void sc_preparing() {
                     case 1:
                         cur_menu_num = DUNGEON;
                         run = false;
-                        cur_world.gen(10, 10, 2);
+                        //cur_world.gen(10, 10, 2);
                         break;
                     case 2:
                         print("2");

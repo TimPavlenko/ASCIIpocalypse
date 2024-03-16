@@ -3,6 +3,8 @@
 // STL:
 //#include "stdafx.h"
 #include <iostream>
+#include <io.h>
+#include <fcntl.h>
 // Custom:
 #include "tims_header.h"
 
@@ -27,6 +29,9 @@
 // ############## Main cycle ##############
 int main() {
     // preparing:
+    _setmode(_fileno(stdout), _O_U16TEXT);
+    //_setmode(_fileno(stdin),  _O_U16TEXT);
+    //_setmode(_fileno(stderr), _O_U16TEXT);
     settings = Settings(load_map(settings_path));
     resize_window(settings.w, settings.h);
 

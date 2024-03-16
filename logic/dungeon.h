@@ -52,46 +52,41 @@ void sc_dungeon() {
     bool run = true;
     while (run) {
         // Формирование play_against_greed:
-        std::string pa_greed_cells = "";
+        std::wstring pa_greed_cells = L"rar!;rer!!";//L"map...  ;и русский язык!";
         //pa_greed_cells = "#   # ##### #   #  ##;#  ##   #   ## ## #  #;# # #   #   # # # #  #;##  #   #   #   # #  #;#   #   #   #   #  ##";
-        std::vector<std::vector<std::string>> pa_greed_cells_v = cur_world.get_str(0);
+        /*std::vector<std::vector<std::string>> pa_greed_cells_v = cur_world.get_str(0);
         for(int iy=0; iy<10; iy++){
             for(int ix=0; ix<10; ix++){
                 pa_greed_cells += pa_greed_cells_v[iy][ix];
             }
             //print(pa_greed_cells);
             pa_greed_cells += ";";
-        }
-
-        // Статусбар:
-        std::string sep_buff = "";
-        for(int i=0; i<settings.w; i++){ sep_buff+="_"; }
-        std::string status_line_1 = "HP: "+rem(7, "46/50")+"$: 10";
-        std::string status_line_2 = "XP: "+rem(7, "20/100");
-
-        std::map<std::string, std::string> params = {
-            {"rsizex", std::to_string(settings.w) },
-            {"rsizey", std::to_string(settings.h) },
-            {"sep_lbl_posy", std::to_string(settings.h-sep_indent) },
-            {"sep_lbl_sizex", std::to_string(settings.w) },
-            {"sep_lbl_text", sep_buff },
-            {"s1_text", status_line_1 },
-            {"1s_lbl_posy", std::to_string(settings.h-sep_indent+1) },
-            {"s2_text", status_line_2 },
-            {"2s_lbl_posy", std::to_string(settings.h-sep_indent+2) },
-            {"pa_grid_sizex", std::to_string(settings.w-1) },
-            {"pa_grid_sizey", std::to_string(settings.h-sep_indent) },
-            {"pa_grid_text",  pa_greed_cells},
-        };
-
-        //clear();
-        /*print(std::to_string(id_buffer["player_id"]));
-        print("+===+");
-        for(auto i : cur_world.grid){
-
         }*/
 
-        std::cout << rendering(loc_prompt, params);
+        // Статусбар:
+        std::wstring sep_buff = L"";
+        for(int i=0; i<settings.w; i++){ sep_buff+=L"_"; }
+        std::wstring status_line_1 = L"HP: "+wrem(7, L"46/50")+L"$: 10";
+        std::wstring status_line_2 = L"XP: "+wrem(7, L"20/100");
+
+        std::map<std::string, std::wstring> params = {
+            {"rsizex", std::to_wstring(settings.w) },
+            {"rsizey", std::to_wstring(settings.h) },
+            {"sep_lbl_posy", std::to_wstring(settings.h-sep_indent) },
+            {"sep_lbl_sizex", std::to_wstring(settings.w) },
+            {"sep_lbl_text", sep_buff },
+            {"s1_text", status_line_1 },
+            {"1s_lbl_posy", std::to_wstring(settings.h-sep_indent+1) },
+            {"s2_text", status_line_2 },
+            {"2s_lbl_posy", std::to_wstring(settings.h-sep_indent+2) },
+            {"pa_grid_sizex", std::to_wstring(settings.w-1) },
+            {"pa_grid_sizey", std::to_wstring(settings.h-sep_indent) },
+            {"pa_grid_text",  pa_greed_cells}
+        };
+
+        clear();
+        std::wcout << L"Unicode -- English -- Русский -- Ελληνικά -- Español. \u9774 \u0444!" << std::endl;
+        std::wcout << rendering(loc_prompt, params);
 
         cross_screen_buffer["PlayerCom"] = 0;
         // input catching:
@@ -112,6 +107,6 @@ void sc_dungeon() {
 
             break;
         }
-        cur_world.tick(cur_world);
+        //cur_world.tick(cur_world);
     }
 }

@@ -56,13 +56,13 @@ void sc_resolution_setting() {
     bool run = true;
     while (run) {
         clear();
-        std::map<std::string, std::string> params = {
-            {"rsizex", std::to_string(settings.w) },
-            {"rsizey", std::to_string(settings.h) },
-            {"k_res", cat(std::to_string(settings.w), "x", std::to_string(settings.h)) }
+        std::map<std::string, std::wstring> params = {
+            {"rsizex", std::to_wstring(settings.w) },
+            {"rsizey", std::to_wstring(settings.h) },
+            {"k_res", wcat(std::to_wstring(settings.w), L"x", std::to_wstring(settings.h)) }
 
         };
-        std::cout << rendering(loc_prompt, params);
+        std::wcout << rendering(loc_prompt, params);
 
         switch ((int)wait_key_press()) {
             case ARROW_UP:
@@ -94,19 +94,19 @@ void sc_options() {
     short arrow_pointer = 2;
 
     auto arrow_pointer_op{
-        [&arrow_pointer](short p){ if(arrow_pointer==p){ return std::string{">"}; }else{ return std::string{" "}; } }
+        [&arrow_pointer](short p){ if(arrow_pointer==p){ return std::wstring{L">"}; }else{ return std::wstring{L" "}; } }
     };
 
     bool run = true;
     while (run) {
         clear();
-        std::map<std::string, std::string> params = {
-            {"k_a1", cat(std::string{arrow_pointer_op(1)}, "resolution")},
-            {"k_a2", cat(std::string{arrow_pointer_op(2)}, "back")},
-            {"root_x", std::to_string(settings.w) },
-            {"root_y", std::to_string(settings.h) }
+        std::map<std::string, std::wstring> params = {
+            {"k_a1", wcat(arrow_pointer_op(1), L"resolution")},
+            {"k_a2", wcat(arrow_pointer_op(2), L"back")},
+            {"root_x", std::to_wstring(settings.w) },
+            {"root_y", std::to_wstring(settings.h) }
         };
-        std::cout << rendering(read_file("screens/options.sc"), params);
+        std::wcout << rendering(read_file("screens/options.sc"), params);
 
         // input catching:
         switch ((int)wait_key_press()) {
