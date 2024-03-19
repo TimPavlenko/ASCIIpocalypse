@@ -21,6 +21,14 @@
                 "size": [ 97, 7 ],
                 "children": []
             },
+            "anotation_lbl": {
+                "text": "     the black plague is raging;the heart of the castle is the goal;           I was cursed",
+
+                "type": "multiline",
+                "pos": [ 30, 9 ],
+                "size": [ 35, 3 ],
+                "children": []
+            },
             "label1": {
                 "text": "k_a1",
 

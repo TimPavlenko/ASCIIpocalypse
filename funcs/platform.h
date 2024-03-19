@@ -6,6 +6,9 @@
 #include <iostream>
 #include <conio.h>
 
+//#include "windows.h" //библиотека audiere её требует
+//#include "audiere.h" //звуковая библиотека
+
 void clear() {
 	system("cls"); // Windows
 

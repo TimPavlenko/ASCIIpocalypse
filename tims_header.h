@@ -41,13 +41,8 @@ public:
 
 // ############## funcs ##############
 
-#include <codecvt> // codecvt_utf8
-#include <locale>  // wstring_convert
-
-// encoding function
-std::string to_utf8(std::wstring& wide_string){
-    static std::wstring_convert<std::codecvt_utf8<wchar_t>> utf8_conv;
-    return utf8_conv.to_bytes(wide_string);
+int rand_from_range(int n1, int n2){
+	return (n1 + rand() % n2);
 }
 
 void print(auto str, char end='\n') {

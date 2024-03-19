@@ -29,11 +29,12 @@
 // ############## Main cycle ##############
 int main() {
     // preparing:
-    _setmode(_fileno(stdout), _O_U16TEXT);
-    //_setmode(_fileno(stdin),  _O_U16TEXT);
-    //_setmode(_fileno(stderr), _O_U16TEXT);
     settings = Settings(load_map(settings_path));
     resize_window(settings.w, settings.h);
+
+    // анотация перед запуском
+    //std::cout<<"=- victim -="<<std::endl;
+    //wait_key_press();
 
     // screens switcher:
     bool main_cycle_run = true;
@@ -63,3 +64,7 @@ int main() {
     print("Goodbye, traveler");
     return 0;
 }
+
+#include "classes/Object.cpp"
+#include "classes/Entity.cpp"
+#include "classes/Floor.cpp"
