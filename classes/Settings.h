@@ -1,34 +1,40 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "../funcs/saveload.h"
+#include "../funcs/json.hpp"
+using json = nlohmann::json;
 
 class Settings {
 public:
 	int w;
     int h;
-    bool flscrn;
-	Settings (std::map<std::string, std::string> m) {
-		w = stoi(m["w"]);
-		h = stoi(m["h"]);
-		flscrn = to_bool(m["flscrn"]);
-	}
-	Settings () {
+    //bool flscrn;
+	bool reverse_jornal;
+
+	Settings() {
 		w = 100;
 		h = 20;
-		flscrn = false;
+		reverse_jornal = false;
 	}
 
 	void serialize(std::string path){
+		json jsonfile;
 
-		auto flscrn_var = [](bool v){ if(v){return "true";}else{return "false";} };
+		jsonfile["w"] = w;
+		jsonfile["h"] = h;
+		jsonfile["reverse_jornal"] = reverse_jornal;
 
-		std::map<std::string, std::string> m = {
-			{"w", std::to_string(w)},
-			{"h", std::to_string(h)},
-			{"flscrn", flscrn_var(flscrn)}
-		};
-		save_map(path, m);
+		std::ofstream file(path);
+		file << jsonfile;
+	}
+
+	void deserialize(std::string path){
+		std::ifstream ifs(path);
+		json jf = json::parse(ifs);
+
+		w = jf["w"];
+		h = jf["h"];
+		reverse_jornal = jf["reverse_jornal"];
 	}
 
 };

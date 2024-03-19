@@ -13,16 +13,24 @@
                     "size": [ "root_x", "root_y" ],
                     "children": []
                 },
-                "label1": {
-                    "text": "k_a1",
+                "jornrev_lbl": {
+                    "text": "k_a3",
+
+                    "type": "label",
+                    "pos": [ 2, 10 ],
+                    "size": [ 20, 1 ],
+                    "children": []
+                },
+                "res_lbl": {
+                    "text": "k_a2",
 
                     "type": "label",
                     "pos": [ 2, 12 ],
                     "size": [ 15, 1 ],
                     "children": []
                 },
-                "label2": {
-                    "text": "k_a2",
+                "back_lbl": {
+                    "text": "k_a1",
 
                     "type": "label",
                     "pos": [ 2, 14 ],

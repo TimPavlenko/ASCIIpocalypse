@@ -5,6 +5,7 @@
 #include <iostream>
 #include <io.h>
 #include <fcntl.h>
+#include <format>
 // Custom:
 #include "tims_header.h"
 
@@ -14,7 +15,6 @@
 
 
 // ############## Funcs ##############
-#include "funcs/saveload.h"
 #include "funcs/platform.h"
 #include "funcs/graphics.h"
 
@@ -29,7 +29,7 @@
 // ############## Main cycle ##############
 int main() {
     // preparing:
-    settings = Settings(load_map(settings_path));
+    settings.deserialize(settings_path);
     resize_window(settings.w, settings.h);
 
     // анотация перед запуском

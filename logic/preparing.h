@@ -38,6 +38,10 @@ void sc_preparing() {
 
                         cur_world = World();
                         cur_world.gen();
+                        jornal = {};
+                        //jornal.push_back("| You go down into a cave");
+                        for(int i=0; i<15; i++){ jornal.push_back(std::to_string(i)); }
+
                         break;
                     case 2:
                         print("2");

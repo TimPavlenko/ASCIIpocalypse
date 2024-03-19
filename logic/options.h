@@ -91,18 +91,23 @@ void sc_resolution_setting() {
 }
 
 void sc_options() {
-    short arrow_pointer = 2;
+    short arrow_pointer = 3;
 
     auto arrow_pointer_op{
         [&arrow_pointer](short p){ if(arrow_pointer==p){ return std::string{">"}; }else{ return std::string{" "}; } }
+    };
+
+    auto true_cross{
+        [](bool p){ if(p){ return "x"; }else{ return " "; } }
     };
 
     bool run = true;
     while (run) {
         clear();
         std::map<std::string, std::string> params = {
-            {"k_a1", cat(arrow_pointer_op(1), "resolution")},
-            {"k_a2", cat(arrow_pointer_op(2), "back")},
+            {"k_a3", cat(arrow_pointer_op(1), std::format("reverse jornal [{}]", true_cross(settings.reverse_jornal)))},
+            {"k_a2", cat(arrow_pointer_op(2), "resolution")},
+            {"k_a1", cat(arrow_pointer_op(3), "back")},
             {"root_x", std::to_string(settings.w) },
             {"root_y", std::to_string(settings.h) }
         };
@@ -114,19 +119,23 @@ void sc_options() {
                 if(arrow_pointer>1){arrow_pointer -= 1;}
             break;
             case ARROW_DOWN:
-                if(arrow_pointer<2){arrow_pointer += 1;}
+                if(arrow_pointer<3){arrow_pointer += 1;}
             break;
             case KEY_ENTER:
                 switch (arrow_pointer) {
                     case 1:
-                        sc_resolution_setting();
+                        if(settings.reverse_jornal){settings.reverse_jornal=false;}else{settings.reverse_jornal=true;}
                     break;
                     case 2:
+                        sc_resolution_setting();
+                    break;
+                    case 3:
                         cur_menu_num = MAIN_MENU;
                         run = false;
                     break;
                 }
             break;
         }
+
     }
 }

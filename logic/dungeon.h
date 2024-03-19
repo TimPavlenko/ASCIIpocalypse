@@ -61,25 +61,23 @@ void sc_dungeon() {
     while (run) {
         // Формирование play_against_greed:
         std::string pa_greed_cells = "   - - - - -;   | @ . . |;   | . . . | ;   | . . . + # # #   - - - - -;   - - - - -     #   | . . . |;                 # # + . . . |;                 #   - - - - -;             - - + - - - ; - - - - -   | . . . . |; | . . . + # # . . . [ |; | > . . |   | . g . . |; - - - - -   | . . . . |;       	     - - - - - -";
-        //std::string pa_greed_cells = "#   # ##### #   #  ##;#  ##   #   ## ## #  #;# # #   #   # # # #  #;##  #   #   #   # #  #;#   #   #   #   #  ##";
         //std::string pa_greed_cells = cur_world.get_str();
 
-        /*std::vector<std::vector<std::string>> pa_greed_cells_v = cur_world.get_str(0);
-        for(int iy=0; iy<10; iy++){
-            for(int ix=0; ix<10; ix++){
-                pa_greed_cells += pa_greed_cells_v[iy][ix];
-            }
-            //print(pa_greed_cells);
-            pa_greed_cells += ";";
-        }*/
-
         // формирование журнала:
-        jornal = {};
-        for(int i=0; i<settings.h-2; i++){ jornal.push_back(std::to_string(i)); }
         std::string jornal_text = "";
-        for (int i = jornal.size(); i >= 0/*jornal.size()-settings.h*/; --i) {
-            jornal_text+=jornal[i];
-            if(i!=jornal.size()-settings.h){ jornal_text+=";"; }
+        std::vector<std::string> jornal_v_tmp = {};
+        for(int i=0; i<settings.h; i++){
+            if(i+1>jornal.size()){
+                jornal_v_tmp.push_back(" ");
+            }else{
+                //jornal_v_tmp.push_back(jornal[i]);
+                jornal_v_tmp.insert(jornal_v_tmp.begin(), jornal[i]);
+            }
+        }
+        if(settings.reverse_jornal){ std::reverse( jornal_v_tmp.begin(), jornal_v_tmp.end() ); }
+        for(int i=0; i<jornal_v_tmp.size(); i++){
+            jornal_text+="| "+jornal_v_tmp[i];
+            if(i<jornal_v_tmp.size()-1){ jornal_text+=";"; }
         }
 
 
