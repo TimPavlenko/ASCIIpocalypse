@@ -60,8 +60,8 @@ void sc_dungeon() {
     bool run = true;
     while (run) {
         // Формирование play_against_greed:
-        std::string pa_greed_cells = "   - - - - -;   | @ . . |;   | . . . | ;   | . . . + # # #   - - - - -;   - - - - -     #   | . . . |;                 # # + . . . |;                 #   - - - - -;             - - + - - - ; - - - - -   | . . . . |; | . . . + # # . . . [ |; | > . . |   | . g . . |; - - - - -   | . . . . |;       	     - - - - - -";
-        //std::string pa_greed_cells = cur_world.get_str();
+        //std::string pa_greed_cells = "   - - - - -;   | @ . . |;   | . . . | ;   | . . . + # # #   - - - - -;   - - - - -     #   | . . . |;                 # # + . . . |;                 #   - - - - -;             - - + - - - ; - - - - -   | . . . . |; | . . . + # # . . . [ |; | > . . |   | . g . . |; - - - - -   | . . . . |;       	     - - - - - -";
+        std::string pa_greed_cells = cur_world.get_str();
 
         // формирование журнала:
         std::string jornal_text = "";

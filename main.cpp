@@ -9,7 +9,6 @@
 // Custom:
 #include "tims_header.h"
 
-
 // ############## Global ##############
 #include "global.h"
 
@@ -65,6 +64,9 @@ int main() {
     return 0;
 }
 
+#include "classes/World.cpp"
+#include "classes/Cell.cpp"
 #include "classes/Object.cpp"
 #include "classes/Entity.cpp"
 #include "classes/Floor.cpp"
+#include "classes/Components.cpp"

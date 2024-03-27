@@ -9,8 +9,6 @@ public:
 
     int passable; // 0-непроходимо 1-проходимо 2-только перелететь
 
-    Floor(std::string nkind){
-        kind = nkind;
-    }
+    Floor(std::string nkind);
 
 };

@@ -41,7 +41,7 @@ public:
 
 // ############## funcs ##############
 
-int rand_from_range(int n1, int n2){
+int rfr(int n1, int n2){ // rand_from_range
 	return (n1 + rand() % n2);
 }
 

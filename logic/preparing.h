@@ -37,6 +37,8 @@ void sc_preparing() {
                         run = false;
 
                         cur_world = World();
+                        cur_world.height = 10;//50;
+                        cur_world.width = 10;//50;
                         cur_world.gen();
                         jornal = {};
                         //jornal.push_back("| You go down into a cave");

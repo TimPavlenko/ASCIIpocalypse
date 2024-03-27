@@ -28,7 +28,13 @@ std::map<std::string, std::string> chmap_floor{ // id, symbol
 	{"bedrock", " "},
 	{"hwall", "-"},
 	{"vwall", "|"},
-	{"roomfloor", "."}
+	{"roomfloor", "."},
+	{"door", "+"},
+	{"corridor", "#"}
+};
+std::map<std::string, std::string> chmap_creature{ // id, symbol
+	{"player", "@"},
+	{"goblin", "g"}
 };
 
 const int min_h=20, max_h=60, min_w=100, max_w=230;
@@ -37,6 +43,7 @@ const int min_h=20, max_h=60, min_w=100, max_w=230;
 int cur_menu_num = MAIN_MENU;
 std::map<std::string, int> cross_screen_buffer;
 std::vector<std::string> jornal;
+unsigned long entityCounter = 0;
 
 // ------ settings ------
 #include "classes/Settings.h"
