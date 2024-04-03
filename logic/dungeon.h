@@ -75,7 +75,12 @@ void sc_dungeon() {
                 /*if(jornal[i].size()>vsep1_indent){
                     jornal_v_tmp.insert(jornal_v_tmp.begin(), "long stroka ;}");
                 }else{*/
-                    jornal_v_tmp.insert(jornal_v_tmp.begin(), jornal[i]);
+                    int nn = 0;
+                    if(jornal.size()>settings.h){
+                        nn = jornal.size()-settings.h;
+                    }
+
+                    jornal_v_tmp.insert(jornal_v_tmp.begin(), jornal[i+nn]);
                 //}
             }
         }

@@ -4,11 +4,14 @@
 #include "../funcs/platform.h"
 #include "../tims_header.h"
 #include "Entity.cpp"
+//#include "json.hpp"
+//using json = nlohmann::json;
 
 class World {
 public:
 	// Наполнение мира:
 	std::string name; // имя для сейва
+	std::string location_name;
 	int tick_counter = 0;
 	std::vector<Entity> entity;
 
@@ -71,6 +74,7 @@ public:
 
 		creatures = tmpv;
 		tick_counter+=1;
+		jornal.push_back(std::to_string(tick_counter));
 	}
 
 	std::string get_str(/*середина камеры*/){
@@ -147,7 +151,23 @@ public:
 	}
 	*/
 
-	void gen(){
+	void gen(int n){
+		switch (n) {
+			case 1: // пещеры (1-1)
+				location_name = "1-1 (caves)";
+				// сюда стоит добавить мысли персонажа, разные (как сплэши из майна) в разных забегах
+				jornal.push_back("this is second really long long long long long long line...");
+			break;
+			case 2: // пещеры (1-2)
+				location_name = "1-2 (caves)";
+				jornal.push_back("this is second really long long long long long long line...");
+			break;
+			case 3: // пещеры (1-2)
+				location_name = "1-3 (caves)";
+				jornal.push_back("this is second really long long long long long long line...");
+			break;
+		}
+
 		// КОСТЫЛИ ХАЛТУРА ОВНОКОД, но задача - сдать, а не долго поддерживать
 	    initializeMap();
 
