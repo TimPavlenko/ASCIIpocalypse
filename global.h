@@ -3,7 +3,7 @@
 #pragma once
 #include <string>
 #include <map>
-#include "classes/World.h"
+
 
 
 // ------ constants ------
@@ -29,12 +29,53 @@ std::map<std::string, std::string> chmap_floor{ // id, symbol
 	{"hwall", "-"},
 	{"vwall", "|"},
 	{"roomfloor", "."},
-	{"door", "+"},
-	{"corridor", "#"}
+	//{"door", "+"},
+	{"corridor", "#"},
+	{"upstairs", ">"},
+	{"downstairs", "<"}
+};
+std::map<std::string, std::string> chmap_items{ // id, symbol
+	{"gold", "$"},
+	{"trap", "^"},
+	{"weapon", ")"},
+	{"armor", "["},
+	{"eat", "%"},
+	{"scroll", "?"},
+	{"wand", "/"},
+	{"ring", "="},
+	{"potion", "!"},
+	{"item", "("},
+	{"amulet", "\""},
+	{"stone", "*"},
+	{"statue", "'"},
+	{"ball", "0"},
+	{"altar", "_"},
+	{"fountain", "{"},
+	{"pool", "}"},
+	{"throne", "\\"}
 };
 std::map<std::string, std::string> chmap_creature{ // id, symbol
 	{"player", "@"},
-	{"goblin", "g"}
+	{"ant", "a"},
+	{"blob", "b"},
+	{"dwarf", "d"},
+	{"dragon", "D"},
+	{"eye", "e"},
+	{"elemental", "E"},
+	{"goblin", "g"},
+	{"gnom", "G"},
+	{"imp", "i"},
+	{"kobold", "k"},
+	{"mimic", "m"},
+	{"orc", "o"},
+	{"spider", "s"},
+	{"snake", "S"},
+	{"unicorn", "u"},
+	{"vortex", "v"},
+	{"vampire", "V"},
+	{"worm", "w"},
+	{"xan", "x"},
+	{"zombi", "z"}
 };
 
 const int min_h=20, max_h=60, min_w=100, max_w=230;
@@ -54,4 +95,5 @@ Settings settings;
 */
 
 // ------ game morld ------
+#include "classes/World.h"
 World cur_world; // current deserialized world

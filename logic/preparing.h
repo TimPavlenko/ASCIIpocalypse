@@ -37,12 +37,14 @@ void sc_preparing() {
                         run = false;
 
                         cur_world = World();
-                        cur_world.height = 10;//50;
-                        cur_world.width = 10;//50;
+                        cur_world.height = 6;//50;
+                        cur_world.width = 20;//50;
                         cur_world.gen();
                         jornal = {};
                         //jornal.push_back("| You go down into a cave");
-                        for(int i=0; i<15; i++){ jornal.push_back(std::to_string(i)); }
+                        jornal.push_back("this is first really long long long long long long line...");
+                        for(int i=0; i<25; i++){ jornal.push_back(std::to_string(i)); }
+                        jornal.push_back("this is second really long long long long long long line...");
 
                         break;
                     case 2:

@@ -105,7 +105,7 @@ void sc_options() {
     while (run) {
         clear();
         std::map<std::string, std::string> params = {
-            {"k_a3", cat(arrow_pointer_op(1), std::format("reverse jornal [{}]", true_cross(settings.reverse_jornal)))},
+            {"k_a3", cat(arrow_pointer_op(1), std::format("reverse jornal [{}]", true_cross(settings.reverse_jornal))) },
             {"k_a2", cat(arrow_pointer_op(2), "resolution")},
             {"k_a1", cat(arrow_pointer_op(3), "back")},
             {"root_x", std::to_string(settings.w) },

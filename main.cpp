@@ -63,10 +63,3 @@ int main() {
     print("Goodbye, traveler");
     return 0;
 }
-
-#include "classes/World.cpp"
-#include "classes/Cell.cpp"
-#include "classes/Object.cpp"
-#include "classes/Entity.cpp"
-#include "classes/Floor.cpp"
-#include "classes/Components.cpp"

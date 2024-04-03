@@ -65,27 +65,71 @@ void sc_dungeon() {
 
         // формирование журнала:
         std::string jornal_text = "";
+        std::string log_sep = "| ";
         std::vector<std::string> jornal_v_tmp = {};
         for(int i=0; i<settings.h; i++){
             if(i+1>jornal.size()){
                 jornal_v_tmp.push_back(" ");
             }else{
                 //jornal_v_tmp.push_back(jornal[i]);
-                jornal_v_tmp.insert(jornal_v_tmp.begin(), jornal[i]);
+                /*if(jornal[i].size()>vsep1_indent){
+                    jornal_v_tmp.insert(jornal_v_tmp.begin(), "long stroka ;}");
+                }else{*/
+                    jornal_v_tmp.insert(jornal_v_tmp.begin(), jornal[i]);
+                //}
             }
         }
         if(settings.reverse_jornal){ std::reverse( jornal_v_tmp.begin(), jornal_v_tmp.end() ); }
         for(int i=0; i<jornal_v_tmp.size(); i++){
-            jornal_text+="| "+jornal_v_tmp[i];
+            jornal_text+=jornal_v_tmp[i];
             if(i<jornal_v_tmp.size()-1){ jornal_text+=";"; }
         }
+        // Перенос длинных строк
+        auto trimming_long_lines {
+			[&](std::string jt){
+                std::vector<std::string> words;
+                std::istringstream iss(jt);
+                std::string word;
+                int num_deleted = 0;
+                while (getline(iss, word, ';')) {
+                    if (word.length() > vsep1_indent-log_sep.size()) {
+                        int start = 0;
+                        while (start < word.length()) {
+                            words.push_back(word.substr(start, vsep1_indent-log_sep.size()));
+                            start += vsep1_indent-log_sep.size();
+                        }
+                        num_deleted++;
+                    } else {
+                        words.push_back(word);
+                    }
+                }
+                if(settings.reverse_jornal){
+                    for (int i = 0; i < num_deleted; ++i) {
+                        words.pop_back();
+                    }
+                }else{
+                    words.erase(words.begin(), words.begin() + num_deleted);
+                }
 
+                return words;
+            }
+		};
+
+        jornal_v_tmp = trimming_long_lines(jornal_text);
+        jornal_text = "";
+        //std::cout << jornal_v_tmp.size() << std::endl;
+        for(int i=0; i<jornal_v_tmp.size(); i++){
+            jornal_text+=log_sep+jornal_v_tmp[i];
+            if(i<jornal_v_tmp.size()-1){ jornal_text+=";"; }
+        }
 
         // Статусбар:
         std::string sep_buff = "";
         for(int i=0; i<settings.w-vsep1_indent; i++){ sep_buff+="_"; }
-        std::string status_line_1 = "HP: "+rem(7, "46/50") +"AC: 10  "+"loc: 1-1";
-        std::string status_line_2 = "XP: "+rem(7, "20/100")+"$: 45   "+"T: 27   ";
+        std::string status_line_1 = "HP: "+rem(7, "46/50") +" AC: 10  "+" loc: 1-1";
+        //std::string status_line_2 = std::format("XP: [{}] $: 45   T: [{}]"   , rem(7, "20/100"), rem(5, std::to_string(cur_world.tick_counter)));
+        std::string status_line_2 = "XP: "+rem(7, "20/100")+"$: 45   "+"T: "+std::to_string(cur_world.tick_counter);//"T: 27   ";
+
 
         std::map<std::string, std::string> params = {
             {"rsizex", std::to_string(settings.w) },
@@ -116,20 +160,21 @@ void sc_dungeon() {
         switch ((int)wait_key_press()) {
             case ARROW_UP:
                 cross_screen_buffer["PlayerCom"] = 1;
+                cur_world.tick();
             break;
             case ARROW_DOWN:
                 cross_screen_buffer["PlayerCom"] = 2;
+                cur_world.tick();
             break;
             case ARROW_LEFT:
                 cross_screen_buffer["PlayerCom"] = 3;
+                cur_world.tick();
             break;
             case ARROW_RIGHT:
                 cross_screen_buffer["PlayerCom"] = 4;
-            break;
-            case KEY_ENTER:
-
+                cur_world.tick();
             break;
         }
-        //cur_world.tick(cur_world);
+
     }
 }

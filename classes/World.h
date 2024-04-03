@@ -1,45 +1,113 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "Cell.h"
+#include "../funcs/platform.h"
+#include "../tims_header.h"
+#include "Entity.cpp"
 
 class World {
 public:
+	// Наполнение мира:
 	std::string name; // имя для сейва
+	int tick_counter = 0;
+	std::vector<Entity> entity;
 
+
+	// Окружение:
 	int height, width;
-	std::map<unsigned long, Entity> entity; // id, entity
-	std::vector<std::vector<Cell>> grid; // y, x
+
+	// (y, x):
+	std::vector<std::vector<std::string>> floor;
+	std::vector<std::vector<std::string>> items;
+	std::vector<std::vector<std::string>> creatures;
 
 	void tick(){
-		for(auto& en : entity){
-    		en.second.tick(this);
-		}
-		for(int iy=0; iy<grid.size(); iy++){
-			for(int ix=0; ix<grid[iy].size(); ix++){
-				//for(auto cr : grid[iy][ix].creatures){ cr.tick(this); }
-				for(auto ob : grid[iy][ix].objects){ ob.tick(this); }
+
+		auto can_move_to {
+			[&](int y, int x){
+				if(floor[y][x]==chmap_floor["roomfloor"] ||
+				floor[y][x]==chmap_floor["corridor"] ||
+				floor[y][x]==chmap_floor["upstairs"] ||
+				floor[y][x]==chmap_floor["downstairs"]){
+					return true;
+				}else{
+					return false;
+				}
 			}
+		};
+
+		std::vector<std::vector<std::string>> tmpv(height, std::vector<std::string>(width, " "));
+		for(int i=0; i<entity.size(); i++){
+			if (entity[i].type == "player"){
+				bool stay = true;
+				int del_y=entity[i].y, del_x=entity[i].x;
+				switch (cross_screen_buffer["PlayerCom"]) {
+					case 1:
+						if(can_move_to(entity[i].y-1, entity[i].x)){del_y--; stay=false;}
+					break;
+					case 2:
+						if(can_move_to(entity[i].y+1, entity[i].x)){del_y++; stay=false;}
+					break;
+					case 3:
+						if(can_move_to(entity[i].y, entity[i].x-1)){del_x--; stay=false;}
+					break;
+					case 4:
+						if(can_move_to(entity[i].y, entity[i].x+1)){del_x++; stay=false;}
+					break;
+				}
+				if(!stay){
+					tmpv[del_y][del_x] = "@";
+					creatures[entity[i].y][entity[i].x]=" ";
+					entity[i].y=del_y; entity[i].x=del_x;
+				}else{
+					tmpv[entity[i].y][entity[i].x] = "@";
+				}
+			}/*else if (entity[i].type == "goblin"){
+
+			}*/
+
 		}
+
+
+		creatures = tmpv;
+		tick_counter+=1;
 	}
 
 	std::string get_str(/*середина камеры*/){
+
 		std::string rez = "";
-		for(int iy=0; iy<grid.size(); iy++){
-			for(int ix=0; ix<grid[iy].size(); ix++){
-				rez+=grid[iy][ix].get_ch();
-				if(ix!=grid[iy].size()-1){ rez+=" "; }
+		for(int iy=0; iy<floor.size(); iy++){
+			for(int ix=0; ix<floor[iy].size(); ix++){
+				std::string simbol = " ";
+				if(creatures[iy][ix]!=" "){
+					simbol=creatures[iy][ix];
+				}else if(items[iy][ix]!=" "){
+					simbol=items[iy][ix];
+				}else{
+					simbol=floor[iy][ix];
+				}
+
+				rez+=simbol;
+				//if(ix!=floor[iy].size()-1){ rez+="+"; }
 			}
 			rez+=";";
 		}
+
 		return rez;
 	}
 	// ###### генерация ######
 
 	void initializeMap() {
-        grid.assign(height, std::vector<Cell>(width, Cell()));
+		//floor.assign(height, std::vector<std::string>(width, " "));
+		//creatures.assign(height, std::vector<std::string>(width, " "));
+		std::vector<std::vector<std::string>> tmpv(height, std::vector<std::string>(width, " "));
+
+		floor = tmpv;
+		items = tmpv;
+		creatures = tmpv;
     }
 
+	/*
 	void create_rooms(int roomsnum, Vector2i minSize=Vector2i(3,3), Vector2i maxSize=Vector2i(6, 6)){// количество комнат, минимальный размер, максимальный размер
 		std::vector<std::vector<std::string>> proto;
 		// Заполняем всё подземелье стенами
@@ -77,7 +145,75 @@ public:
 		std::cin >> rar;
 		///////////////////////////////////////////////////////////////
 	}
+	*/
 
-	void gen();
+	void gen(){
+		// КОСТЫЛИ ХАЛТУРА ОВНОКОД, но задача - сдать, а не долго поддерживать
+	    initializeMap();
+
+
+		// Ландшафт
+		floor = {};
+		std::vector<std::string> test_dungeon_proto = {
+			"------              ",
+			"|....|    ----------",
+			"|.<..|####.........|",
+			"|.....#   |........|",
+			"|....|    |......>.|",
+			"------    ----------"
+		};
+		for(std::string dline : test_dungeon_proto){
+			std::vector<std::string> nline = {};
+			for(char ch : dline){
+				std::string s{ch};
+				nline.push_back(s);
+			}
+			floor.push_back(nline);
+		}
+
+
+		// Вещички
+		//items = {};
+		int gold_num_to_gen = 2;
+		for(int i=0; i<gold_num_to_gen; i++){
+			bool run = true;
+			while (run){
+				int ny=rfr(0, height), nx=rfr(0, width);
+				if(floor[ny][nx]==chmap_floor["roomfloor"]){
+					items[ny][nx] = "$";
+					run = false;
+				}
+			}
+		}
+
+
+		// Существа
+		creatures = {};
+		std::vector<std::string> test_cretures_proto = {
+			"                    ",
+			"                    ",
+			"                    ",
+			"                    ",
+			"                    ",
+			"                    "
+		};
+		for(std::string dline : test_cretures_proto){
+			std::vector<std::string> nline = {};
+			for(char ch : dline){
+				std::string s{ch};
+				nline.push_back(s);
+			}
+			creatures.push_back(nline);
+		}
+		Entity new_player_ent = Entity();
+		new_player_ent.y = 4;
+		new_player_ent.x = 3;
+		new_player_ent.type = "player";
+		creatures[new_player_ent.y][new_player_ent.x] = chmap_creature["player"];
+		entity.push_back(new_player_ent);
+
+
+
+	}
 
 };
