@@ -30,6 +30,7 @@ int main() {
     // preparing:
     settings.deserialize(settings_path);
     resize_window(settings.w, settings.h);
+    jstats = json::parse(read_file("stats.json"));
 
     // анотация перед запуском
     //std::cout<<"=- victim -="<<std::endl;

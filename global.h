@@ -77,6 +77,20 @@ std::map<std::string, std::string> chmap_creature{ // id, symbol
 	{"xan", "x"},
 	{"zombi", "z"}
 };
+std::string symbol_in(std::string simbol){
+	std::string res = "unknown";
+	for (const auto& pair : chmap_creature){
+		if(simbol == pair.second){res="floor";}
+	}
+	for (const auto& pair : chmap_creature){
+		if(simbol == pair.second){res="items";}
+	}
+	for (const auto& pair : chmap_creature){
+		if(simbol == pair.second){res="creature";}
+	}
+
+	return res;
+}
 
 const int min_h=20, max_h=60, min_w=100, max_w=230;
 
@@ -95,5 +109,6 @@ Settings settings;
 */
 
 // ------ game morld ------
+json jstats;
 #include "classes/World.h"
 World cur_world; // current deserialized world

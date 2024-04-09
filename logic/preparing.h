@@ -40,8 +40,7 @@ void sc_preparing() {
                         cur_world.height = 6;//50;
                         cur_world.width = 20;//50;
                         jornal = {};
-                        //jornal.push_back("| You go down into a cave");
-                        for(int i=0; i<settings.h-5; i++){ jornal.push_back(std::to_string(i)); }
+                        for(int i=0; i<settings.h; i++){ jornal.push_back(" "); }
                         cur_world.gen(1);
                         break;
                     case 2:

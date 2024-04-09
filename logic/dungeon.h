@@ -41,7 +41,7 @@ void sc_dungeon() {
 
                         "type": "label",
                         "pos": [ 1, "1s_lbl_posy" ],
-                        "size": [ 30, 1 ],
+                        "size": [ 50, 1 ],
                         "children": []
                     },
                     "status_lbl_2": {
@@ -49,7 +49,7 @@ void sc_dungeon() {
 
                         "type": "label",
                         "pos": [ 1, "2s_lbl_posy" ],
-                        "size": [ 30, 1 ],
+                        "size": [ 50, 1 ],
                         "children": []
                     }
                 }
@@ -102,13 +102,15 @@ void sc_dungeon() {
                         while (start < word.length()) {
                             words.push_back(word.substr(start, vsep1_indent-log_sep.size()));
                             start += vsep1_indent-log_sep.size();
+
                         }
                         num_deleted++;
+
                     } else {
                         words.push_back(word);
                     }
                 }
-                if(settings.reverse_jornal){
+                if(!settings.reverse_jornal){
                     for (int i = 0; i < num_deleted; ++i) {
                         words.pop_back();
                     }
@@ -131,9 +133,11 @@ void sc_dungeon() {
         // Статусбар:
         std::string sep_buff = "";
         for(int i=0; i<settings.w-vsep1_indent; i++){ sep_buff+="_"; }
-        std::string status_line_1 = "HP: "+rem(7, "46/50") +" AC: 10  "+" loc: 1-1";
+
+        std::string hp_status = cat( std::to_string(cross_screen_buffer["player_hp"]), "/", std::to_string(cross_screen_buffer["player_hp_max"]));
+        std::string status_line_1 = "HP: "+rem(7, hp_status)+" AC: 10  "+" loc: "+cur_world.location_name;
         //std::string status_line_2 = std::format("XP: [{}] $: 45   T: [{}]"   , rem(7, "20/100"), rem(5, std::to_string(cur_world.tick_counter)));
-        std::string status_line_2 = "XP: "+rem(7, "20/100")+"$: 45   "+"T: "+std::to_string(cur_world.tick_counter);//"T: 27   ";
+        std::string status_line_2 = "XP: "+rem(7, "46/50")+" $: 45   "+" T: "+std::to_string(cur_world.tick_counter);//"T: 27   ";
 
 
         std::map<std::string, std::string> params = {

@@ -15,6 +15,7 @@
 #include <stdarg.h>
 #include <codecvt> // codecvt_utf8
 #include <locale>  // wstring_convert
+#include <random>
 
 /*namespace th {
     void print(std::string str, char end = '\n');
@@ -42,7 +43,14 @@ public:
 // ############## funcs ##############
 
 int rfr(int n1, int n2){ // rand_from_range
-	return (n1 + rand() % n2);
+	// return (n1 + rand() % n2); слишком псевдо
+
+	std::random_device rd; // Генератор случайных чисел
+    std::mt19937 gen(rd()); // Инициализация генератора случайных чисел
+
+    std::uniform_int_distribution<int> distribution(n1, n2); // Равномерное распределение в диапазоне [n1, n2]
+	int rez = distribution(gen);
+    return rez;
 }
 
 void print(auto str, char end='\n') {
@@ -158,7 +166,7 @@ std::string rem(int n, std::string s, std::string addstr=" "){ // remaining
 	std::string srez = "";
 
 	for(int i=0; i<n; i++){
-		if(i+1 < s.size()){
+		if(i < s.size()){
 			srez += s[i];
 		}else{
 		    srez += addstr;
