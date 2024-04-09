@@ -185,5 +185,11 @@ void sc_dungeon() {
             break;
         }
 
+        // победа ?
+        if(cur_world.lvl_counter > end_lvl_num){
+            cur_menu_num = END;
+            run = false;
+        }
+
     }
 }

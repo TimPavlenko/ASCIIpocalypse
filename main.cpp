@@ -23,6 +23,7 @@
 #include "logic/options.h"
 #include "logic/preparing.h"
 #include "logic/dungeon.h"
+#include "logic/end.h"
 
 
 // ############## Main cycle ##############
@@ -52,8 +53,13 @@ int main() {
         case DUNGEON:
             sc_dungeon();
             break;
+        case END:
+            sc_end();
+            break;
         default: /*unknown shit*/
-            //print("unknown menu num!");
+            print("unknown menu num!");
+            wait_key_press();
+            cur_menu_num = QUIT;
         case QUIT:
             settings.serialize(settings_path);
             main_cycle_run = false;

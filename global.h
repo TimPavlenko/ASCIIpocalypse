@@ -21,8 +21,13 @@ enum{ // id экранов
 	MAIN_MENU	= 1,
 	OPTIONS		= 2,
 	PREPARING	= 3,
-	DUNGEON		= 4
+	DUNGEON		= 4,
+	END			= 5
 };
+
+// номер уровня c боссом (следующий после него не будет генерироватся, а вместо него запустится экран концовки):
+const int end_lvl_num = 5;
+
 // символы для графики:
 std::map<std::string, std::string> chmap_floor{ // id, symbol
 	{"bedrock", " "},

@@ -25,8 +25,6 @@ public:
 	std::vector<std::vector<std::string>> creatures;
 
 	void tick(){
-		jornal.push_back(std::to_string(entity.size()));
-
 		auto can_move_to {
 			[&](int y, int x){
 				if(floor[y][x]==chmap_floor["roomfloor"] ||
@@ -102,7 +100,7 @@ public:
 		for(int i=0; i<entity.size(); i++){
 			if(entity[i].hp<=0){
 				entity.erase(entity.begin() + i);
-				jornal.push_back(symbol_in("a"));
+				//jornal.push_back(symbol_in("a"));
 			}
 		}
 
@@ -202,8 +200,6 @@ public:
 
 	void gen(int n){
 
-		cross_screen_buffer["pl_y"] = 4;
-		cross_screen_buffer["pl_x"] = 3;
 		switch (n) {
 			case 1: // пещеры (1-1)
 				location_name = "1-1";
@@ -213,16 +209,29 @@ public:
 
 				cross_screen_buffer["pl_y"] = 4;
 				cross_screen_buffer["pl_x"] = 3;
+				cross_screen_buffer["players_hp"] = 0;
+				cross_screen_buffer["players_hp_max"] = 0;
+				{
+					Entity tmp_player_ent = Entity("player", 0, 0);
+					cross_screen_buffer["players_hp"] = tmp_player_ent.hp;
+					cross_screen_buffer["players_hp_max"] = tmp_player_ent.hp_max;
+				}
 			break;
 			case 2: // пещеры (1-2)
 				location_name = "1-2";
 				jornal.push_back(std::to_string(tick_counter)+"> Descent to: 1-2 (caves)");
 				jornal.push_back(std::to_string(tick_counter)+"> It got colder. Light from the surface no longer penetrates here.");
+
+				cross_screen_buffer["pl_y"] = 3;
+				cross_screen_buffer["pl_x"] = 3;
 			break;
 			case 3: // пещеры (1-2)
 				location_name = "1-3";
 				jornal.push_back(std::to_string(tick_counter)+"> Descent to: 1-3 (caves)");
 				jornal.push_back(std::to_string(tick_counter)+"> The echo brings to you the sounds of swarming local inhabitants");
+
+				cross_screen_buffer["pl_y"] = 4;
+				cross_screen_buffer["pl_x"] = 3;
 			break;
 			default:
 				location_name = "?-"+std::to_string(n);
@@ -291,8 +300,8 @@ public:
 
 		Entity new_player_ent = Entity("player", cross_screen_buffer["pl_y"], cross_screen_buffer["pl_x"]);
 		creatures[new_player_ent.y][new_player_ent.x] = chmap_creature["player"];
-		cross_screen_buffer["player_hp"] = new_player_ent.hp;
-		cross_screen_buffer["player_hp_max"] = new_player_ent.hp;
+		cross_screen_buffer["player_hp"] = cross_screen_buffer["players_hp"];//new_player_ent.hp;
+		cross_screen_buffer["player_hp_max"] = cross_screen_buffer["players_hp_max"];//new_player_ent.hp;
 		entity.push_back(new_player_ent);
 
 		Entity new_enemy_ent1 = Entity("ant", 1, 1);
