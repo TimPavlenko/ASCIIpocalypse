@@ -11,18 +11,6 @@
 #include "json.hpp"
 using json = nlohmann::json;
 
-/*
-panel(px,py,sx,sy) // панель с полями
-	px, py - позиция
-	sx, sy - размер
-greed // сетка символов
-scroll // текст, но в созможностью прокрутки
-
-VBox // вертикальный контейнер
-HBox // горизонтальный контейнер
-MarginBox // контейнер отступа
-*/
-
 std::vector<std::vector<std::string>> rez = {};
 
 void traversal(auto j, std::string type) {
